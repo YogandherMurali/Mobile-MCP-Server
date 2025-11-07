@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="{{NAMESPACE}}.Styles.Styles">
+
+    <!-- Typography Styles -->
+    <Style x:Key="HeadingLargeStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+    
+    <Style x:Key="HeadingMediumStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+    
+    <Style x:Key="HeadingSmallStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+
+    <Style x:Key="SubheadingStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="None" />
+        <Setter Property="TextColor" Value="{StaticResource TextSecondaryColor}" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+
+    <Style x:Key="BodyTextStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontAttributes" Value="None" />
+        <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+
+    <Style x:Key="CaptionStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontAttributes" Value="None" />
+        <Setter Property="TextColor" Value="{StaticResource TextSecondaryColor}" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+
+    <!-- Button Styles -->
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource ButtonPrimaryBackgroundColor}" />
+        <Setter Property="TextColor" Value="{StaticResource ButtonPrimaryTextColor}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource ShadowColor}"
+                    Offset="0,2"
+                    Radius="4"
+                    Opacity="0.3" />
+        </Setter>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource ButtonPrimaryPressedColor}" />
+                            <Setter Property="Scale" Value="0.98" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource DisabledBackgroundColor}" />
+                            <Setter Property="TextColor" Value="{StaticResource DisabledColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource ButtonSecondaryBackgroundColor}" />
+        <Setter Property="TextColor" Value="{StaticResource ButtonSecondaryTextColor}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource ShadowColor}"
+                    Offset="0,2"
+                    Radius="4"
+                    Opacity="0.3" />
+        </Setter>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource ButtonSecondaryPressedColor}" />
+                            <Setter Property="Scale" Value="0.98" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource DisabledBackgroundColor}" />
+                            <Setter Property="TextColor" Value="{StaticResource DisabledColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="OutlineButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource ButtonOutlineBackgroundColor}" />
+        <Setter Property="TextColor" Value="{StaticResource ButtonOutlineTextColor}" />
+        <Setter Property="BorderColor" Value="{StaticResource ButtonOutlineBorderColor}" />
+        <Setter Property="BorderWidth" Value="2" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource ButtonOutlineHoverColor}" />
+                            <Setter Property="Scale" Value="0.98" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BorderColor" Value="{StaticResource DisabledColor}" />
+                            <Setter Property="TextColor" Value="{StaticResource DisabledColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    {{#INCLUDE_BIOMETRIC}}
+    <Style x:Key="BiometricButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource PrimaryColor}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontAttributes" Value="None" />
+        <Setter Property="BorderColor" Value="{StaticResource PrimaryColor}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="CornerRadius" Value="25" />
+        <Setter Property="HeightRequest" Value="50" />
+        <Setter Property="WidthRequest" Value="50" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+    {{/INCLUDE_BIOMETRIC}}
+
+    {{#INCLUDE_OAUTH}}
+    <Style x:Key="OAuthButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="#4285F4" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource ShadowColor}"
+                    Offset="0,2"
+                    Radius="4"
+                    Opacity="0.3" />
+        </Setter>
+    </Style>
+    {{/INCLUDE_OAUTH}}
+
+    <!-- Entry Styles -->
+    <Style x:Key="StandardEntryStyle" TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="{StaticResource EntryBackgroundColor}" />
+        <Setter Property="TextColor" Value="{StaticResource EntryTextColor}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource EntryPlaceholderColor}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource EntryBackgroundColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Focused">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource EntryBackgroundColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource DisabledBackgroundColor}" />
+                            <Setter Property="TextColor" Value="{StaticResource DisabledColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!-- Frame Styles -->
+    <Style x:Key="CardFrameStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{StaticResource CardBackgroundColor}" />
+        <Setter Property="BorderColor" Value="{StaticResource BorderColor}" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource ShadowColor}"
+                    Offset="0,4"
+                    Radius="8"
+                    Opacity="0.15" />
+        </Setter>
+    </Style>
+
+    <Style x:Key="InputFrameStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{StaticResource EntryBackgroundColor}" />
+        <Setter Property="BorderColor" Value="{StaticResource EntryBorderColor}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HasShadow" Value="False" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="BorderColor" Value="{StaticResource EntryBorderColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Focused">
+                        <VisualState.Setters>
+                            <Setter Property="BorderColor" Value="{StaticResource EntryFocusedBorderColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    {{#INCLUDE_SSO}}
+    <Style x:Key="SsoFrameStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="{StaticResource BorderColor}" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="HasShadow" Value="False" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource HoverColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+    {{/INCLUDE_SSO}}
+
+    <!-- Layout Styles -->
+    <Style x:Key="ContainerStyle" TargetType="StackLayout">
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="Spacing" Value="16" />
+    </Style>
+
+    <Style x:Key="FormSectionStyle" TargetType="StackLayout">
+        <Setter Property="Spacing" Value="12" />
+        <Setter Property="Margin" Value="0,8" />
+    </Style>
+
+    <!-- Image Styles -->
+    <Style x:Key="LogoStyle" TargetType="Image">
+        <Setter Property="Aspect" Value="AspectFit" />
+        <Setter Property="HeightRequest" Value="80" />
+        <Setter Property="WidthRequest" Value="200" />
+        <Setter Property="Margin" Value="0,20" />
+    </Style>
+
+    {{#INCLUDE_USER_PICTURE}}
+    <Style x:Key="UserAvatarStyle" TargetType="Image">
+        <Setter Property="Aspect" Value="AspectFill" />
+        <Setter Property="HeightRequest" Value="80" />
+        <Setter Property="WidthRequest" Value="80" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="UserAvatarFrameStyle" TargetType="Frame">
+        <Setter Property="CornerRadius" Value="40" />
+        <Setter Property="IsClippedToBounds" Value="True" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="{StaticResource BorderColor}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HeightRequest" Value="80" />
+        <Setter Property="WidthRequest" Value="80" />
+        <Setter Property="HasShadow" Value="True" />
+    </Style>
+    {{/INCLUDE_USER_PICTURE}}
+
+    <!-- Icon Styles -->
+    <Style x:Key="IconPrimaryStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="MaterialIcons" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="TextColor" Value="{StaticResource IconPrimaryColor}" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="IconSecondaryStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="MaterialIcons" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="TextColor" Value="{StaticResource IconSecondaryColor}" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <!-- Animation Styles -->
+    <Style x:Key="FadeInStyle" TargetType="VisualElement">
+        <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <!-- Accessibility Styles -->
+    <Style x:Key="AccessibleButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+        <Setter Property="HeightRequest" Value="56" />
+        <Setter Property="FontSize" Value="18" />
+    </Style>
+
+    {{#INCLUDE_VALIDATION}}
+    <!-- Validation Styles -->
+    <Style x:Key="ValidationErrorStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextColor" Value="{StaticResource ErrorColor}" />
+        <Setter Property="Margin" Value="0,4,0,0" />
+    </Style>
+
+    <Style x:Key="ValidationMessageFrameStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="#FFF3F3" />
+        <Setter Property="BorderColor" Value="{StaticResource ErrorColor}" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Margin" Value="0,8" />
+        <Setter Property="HasShadow" Value="False" />
+    </Style>
+    {{/INCLUDE_VALIDATION}}
+
+    {{#INCLUDE_CUSTOM_STYLES}}
+    <!-- Custom Application Styles -->
+    {{CUSTOM_STYLES}}
+    {{/INCLUDE_CUSTOM_STYLES}}
+
+</ResourceDictionary>

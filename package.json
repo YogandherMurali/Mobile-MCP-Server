@@ -1,0 +1,38 @@
+{
+  "name": "mobile-development-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP Server for mobile development teams providing build-ready code components for Kotlin, Swift, MAUI, and React Native",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "build": "echo 'No build step required for Node.js'",
+    "docker:build": "docker build -t mobile-mcp-server .",
+    "docker:run": "docker-compose up",
+    "docker:stop": "docker-compose down"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "mobile-development",
+    "kotlin",
+    "swift",
+    "maui",
+    "react-native",
+    "code-generation",
+    "build-ready-components",
+    "login-flow",
+    "sqlite",
+    "offline"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.21.0",
+    "zod": "^3.25.76"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

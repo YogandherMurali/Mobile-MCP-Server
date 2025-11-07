@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="{{NAMESPACE}}.Pages.{{CLASS_NAME}}"
+    Style="{StaticResource DefaultPage}"
+    xmlns:local="clr-namespace:{{NAMESPACE}}.Helpers"
+    xmlns:ext="clr-namespace:{{NAMESPACE}}.Extensions"
+    xmlns:controls="clr-namespace:{{NAMESPACE}}.Controls"
+    xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+    ios:Page.UseSafeArea="true">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Colors -->
+            <Color x:Key="PrimaryBlue">{{PRIMARY_COLOR}}</Color>
+            <Color x:Key="BackgroundGray">#F3F3F3</Color>
+            <Color x:Key="FieldBorderColor">#ced4da</Color>
+            <Color x:Key="TextColor">#495057</Color>
+            <Color x:Key="PlaceholderColor">#999999</Color>
+            <Color x:Key="UserLabelColor">#777777</Color>
+            
+            <!-- Frame Style -->
+            <Style x:Key="LoginFrame" TargetType="Frame">
+                <Setter Property="BorderColor" Value="{StaticResource FieldBorderColor}"/>
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0,5,0,15"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="HasShadow" Value="False"/>
+                <Setter Property="CornerRadius" Value="4"/>
+            </Style>
+            
+            <!-- Button Style -->
+            <Style x:Key="LoginButtonStyle" TargetType="Button">
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryBlue}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="4" />
+            </Style>
+
+            {{#INCLUDE_OAUTH_SSO}}
+            <!-- Secondary Button Style for OAuth/SSO -->
+            <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{StaticResource PrimaryBlue}" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="BorderColor" Value="{StaticResource PrimaryBlue}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="CornerRadius" Value="4" />
+            </Style>
+            {{/INCLUDE_OAUTH_SSO}}
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+            <!-- App Bar Placeholder -->
+            <ContentView AutomationId="AppBarContent" x:Name="AppBarContent" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+            </ContentView>
+
+            <ScrollView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    
+                    {{#INCLUDE_VALIDATION}}
+                    <!-- Error Messages Stack -->
+                    <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" 
+                                x:Name="MessagesStack" AutomationId="MessagesStack" IsVisible="False" 
+                                Margin="30,30,30,30" MaximumWidthRequest="500">
+                        <Frame VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" 
+                               Padding="0,0,0,0" CornerRadius="10" BackgroundColor="White" 
+                               BorderColor="{StaticResource FieldBorderColor}" IsClippedToBounds="True" Margin="0,0,0,0">
+                            <Frame VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" 
+                                   Padding="0,0,0,0" CornerRadius="10" BackgroundColor="White" 
+                                   BorderColor="{StaticResource FieldBorderColor}" IsClippedToBounds="True" Margin="5,5,5,5">
+                                <Label AutomationId="MessageLabel" x:Name="MessageLabel" FontSize="15" 
+                                       HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" 
+                                       TextColor="{StaticResource TextColor}" Margin="30,30,30,30" />
+                            </Frame>
+                        </Frame>
+                    </StackLayout>
+                    {{/INCLUDE_VALIDATION}}
+                    
+                    <!-- Login Controls -->
+                    <StackLayout Orientation="Vertical" x:Name="LoginControlsStack" AutomationId="LoginControlsStack" IsVisible="True">
+                        
+                        {{#INCLUDE_COMPANY_BRANDING}}
+                        <!-- Logo Section -->
+                        <StackLayout Padding="10,50,10,10" VerticalOptions="Start" WidthRequest="300" HorizontalOptions="Center" Margin="0,0,0,10">
+                            <Image AutomationId="ImgLogo" x:Name="imgLogo" WidthRequest="300" Source="{{LOGO_SOURCE}}" />
+                        </StackLayout>
+                        {{/INCLUDE_COMPANY_BRANDING}}
+
+                        <StackLayout Padding="10,10,10,10" VerticalOptions="StartAndExpand" WidthRequest="300" HorizontalOptions="Center">
+
+                            {{#INCLUDE_USER_PICTURE}}
+                            <!-- User Profile Picture for Biometric -->
+                            <Border HeightRequest="80" WidthRequest="80" HorizontalOptions="Center" VerticalOptions="Center"
+                                    StrokeShape="RoundRectangle 80" Grid.RowSpan="2" Grid.Column="0" Grid.Row="0">
+                                <Grid>
+                                    <Image AutomationId="UserImg" x:Name="UserImg" WidthRequest="80" HeightRequest="80" 
+                                           HorizontalOptions="Center" Source="icon_no_photo.png" Aspect="AspectFit">
+                                    </Image>
+                                </Grid>
+                            </Border>
+                            {{/INCLUDE_USER_PICTURE}}
+
+                            <!-- Welcome Message -->
+                            <StackLayout x:Name="WelcomeStack" HorizontalOptions="Center" Margin="0,20,0,20">
+                                <Label Text="Welcome Back" 
+                                       FontSize="28" 
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center"
+                                       TextColor="{StaticResource TextColor}" />
+                                {{#INCLUDE_USER_PICTURE}}
+                                <Label AutomationId="UsernameLabel" x:Name="UsernameLabel" Margin="0,10,0,0" 
+                                       FontSize="20" TextColor="{StaticResource UserLabelColor}" 
+                                       HorizontalOptions="Center" />
+                                {{/INCLUDE_USER_PICTURE}}
+                            </StackLayout>
+
+                            {{#INCLUDE_EMAIL_PASSWORD}}
+                            <!-- Email Field -->
+                            <StackLayout x:Name="EmailStack" HeightRequest="49" Margin="0,10,0,0">
+                                <Frame Style="{StaticResource LoginFrame}">
+                                    <Entry TextColor="{StaticResource TextColor}" AutomationId="EmailEntry" x:Name="EmailEntry" 
+                                           Placeholder="Email" Keyboard="Email" PlaceholderColor="{StaticResource PlaceholderColor}"
+                                           {{#INCLUDE_VALIDATION}}TextChanged="OnEmailTextChanged"{{/INCLUDE_VALIDATION}}/>
+                                </Frame>
+                            </StackLayout>
+
+                            <!-- Password Field -->
+                            <Frame Style="{StaticResource LoginFrame}" x:Name="PasswordFrame">
+                                <Entry TextColor="{StaticResource TextColor}" AutomationId="PasswordEntry" x:Name="PasswordEntry" 
+                                       Placeholder="Password" IsPassword="True" PlaceholderColor="{StaticResource PlaceholderColor}"
+                                       {{#INCLUDE_VALIDATION}}TextChanged="OnPasswordTextChanged"{{/INCLUDE_VALIDATION}}/>
+                            </Frame>
+                            {{/INCLUDE_EMAIL_PASSWORD}}
+
+                            {{#INCLUDE_BIOMETRIC}}
+                            <!-- Biometric Login Button -->
+                            <Frame Style="{StaticResource LoginFrame}" Margin="0,25,0,0">
+                                <Button AutomationId="BiometricLoginBtn" x:Name="BiometricLoginBtn" 
+                                        Text="Use Biometric Login" 
+                                        Style="{StaticResource LoginButtonStyle}" 
+                                        Clicked="OnBiometricLoginClicked" />
+                            </Frame>
+
+                            <!-- PIN Field (fallback) -->
+                            <Frame Style="{StaticResource LoginFrame}" x:Name="PinFrame" Margin="0,25,0,0" IsVisible="false">
+                                <Entry TextColor="{StaticResource TextColor}" AutomationId="PinEntry" x:Name="PinEntry" 
+                                       Placeholder="PIN" IsPassword="True" Keyboard="Numeric" PlaceholderColor="{StaticResource PlaceholderColor}"/>
+                            </Frame>
+                            {{/INCLUDE_BIOMETRIC}}
+
+                            {{#INCLUDE_LOGIN_BUTTON}}
+                            <!-- Login Button -->
+                            <Frame AutomationId="BtnLoginFrame" x:Name="BtnLoginFrame" Style="{StaticResource LoginFrame}" Margin="0,25,0,0">
+                                <Button AutomationId="BtnLogin" x:Name="BtnLogin" 
+                                        Text="{{LOGIN_BUTTON_TEXT}}" 
+                                        Style="{StaticResource LoginButtonStyle}" 
+                                        Clicked="OnLoginClicked" />
+                            </Frame>
+                            {{/INCLUDE_LOGIN_BUTTON}}
+
+                            {{#INCLUDE_OAUTH}}
+                            <!-- OAuth Login -->
+                            <StackLayout x:Name="OAuthLoginContainer" Margin="0,20,0,0">
+                                <Frame Style="{StaticResource LoginFrame}" AutomationId="OAuthLoginFrame" x:Name="OAuthLoginFrame" 
+                                       BorderColor="{StaticResource TextColor}">
+                                    <Button AutomationId="OAuthLoginBtn" x:Name="OAuthLoginBtn" 
+                                            Text="Sign in with Google" 
+                                            Style="{StaticResource SecondaryButtonStyle}"
+                                            Clicked="OnOAuthLoginClicked" />
+                                </Frame>
+                                
+                                <Frame Style="{StaticResource LoginFrame}" AutomationId="MicrosoftLoginFrame" x:Name="MicrosoftLoginFrame" 
+                                       BorderColor="{StaticResource TextColor}">
+                                    <StackLayout HorizontalOptions="Fill" VerticalOptions="Fill" Orientation="Horizontal">
+                                        <Image AutomationId="ImgMsLogo" x:Name="ImgMsLogo" WidthRequest="21" HeightRequest="21" 
+                                               Margin="10,0,5,0" Source="ic_ms_logo.png" />
+                                        <Label AutomationId="MsLoginLabel" x:Name="MsLoginLabel" Text="Sign in with Microsoft" 
+                                               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"  
+                                               FontSize="16" BackgroundColor="White" TextColor="{StaticResource TextColor}" HeightRequest="40" />
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                            {{/INCLUDE_OAUTH}}
+
+                            {{#INCLUDE_SSO}}
+                            <!-- SSO Login -->
+                            <Frame Style="{StaticResource LoginFrame}" AutomationId="SsoLoginFrame" x:Name="SsoLoginFrame"  
+                                   Margin="0,20,0,0" BorderColor="{StaticResource TextColor}">
+                                <StackLayout HorizontalOptions="Fill" VerticalOptions="Fill" Orientation="Horizontal">
+                                    {{#INCLUDE_COMPANY_BRANDING}}
+                                    <Image AutomationId="ImgCompanyLogo" x:Name="ImgCompanyLogo" WidthRequest="21" HeightRequest="21" 
+                                           Margin="10,0,5,0" Source="{{COMPANY_LOGO}}" />
+                                    {{/INCLUDE_COMPANY_BRANDING}}
+                                    <Label AutomationId="SsoLoginLabel" x:Name="SsoLoginLabel" Text="Sign-in with SSO" 
+                                           HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center"  
+                                           FontSize="16" BackgroundColor="White" TextColor="{StaticResource TextColor}" HeightRequest="40" />
+                                </StackLayout>
+                            </Frame>
+                            {{/INCLUDE_SSO}}
+
+                            <!-- Additional Options -->
+                            <StackLayout x:Name="OptionsStack" HorizontalOptions="Center" Margin="0,20,0,0">
+                                {{#INCLUDE_USER_PICTURE}}
+                                <Label AutomationId="ChangeUser" x:Name="ChangeUser" Text="Log in as a different user" 
+                                       TextColor="{StaticResource PrimaryBlue}" FontSize="16" />
+                                
+                                <Label AutomationId="StoredUser" x:Name="StoredUser" Text="Use last logged account" 
+                                       TextColor="{StaticResource PrimaryBlue}" FontSize="16" Margin="0,10,0,0" />
+                                {{/INCLUDE_USER_PICTURE}}
+                                
+                                {{#INCLUDE_VALIDATION}}
+                                <Label AutomationId="ForgotPassword" x:Name="ForgotPassword" Text="Forgot Password?" 
+                                       TextColor="{StaticResource PrimaryBlue}" FontSize="16" Margin="0,10,0,0" />
+                                {{/INCLUDE_VALIDATION}}
+                            </StackLayout>
+
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

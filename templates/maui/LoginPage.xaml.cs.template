@@ -1,0 +1,546 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
+{{#INCLUDE_BIOMETRIC}}using Microsoft.Maui.Authentication.WebAuthenticator;{{/INCLUDE_BIOMETRIC}}
+{{#INCLUDE_OAUTH}}using Microsoft.Maui.Authentication.WebAuthenticator;{{/INCLUDE_OAUTH}}
+
+namespace {{NAMESPACE}}.Pages
+{
+    public partial class {{CLASS_NAME}} : ContentPage
+    {
+        #region Properties
+        
+        private bool _isBusy = false;
+        public new bool IsBusy
+        {
+            get => _isBusy;
+            set
+            {
+                _isBusy = value;
+                {{#INCLUDE_LOGIN_BUTTON}}
+                BtnLogin.IsEnabled = !value;
+                BtnLogin.Text = value ? "Signing in..." : "{{LOGIN_BUTTON_TEXT}}";
+                {{/INCLUDE_LOGIN_BUTTON}}
+            }
+        }
+
+        {{#INCLUDE_USER_PICTURE}}
+        private string LastLoggedUserName = string.Empty;
+        {{/INCLUDE_USER_PICTURE}}
+        
+        #endregion
+
+        #region Constructor
+
+        public {{CLASS_NAME}}()
+        {
+            InitializeComponent();
+            InitializeControls();
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void InitializeControls()
+        {
+            try
+            {
+                NavigationPage.SetHasBackButton(this, false);
+                NavigationPage.SetHasNavigationBar(this, false);
+
+                {{#INCLUDE_COMPANY_BRANDING}}
+                // Set logo source
+                imgLogo.Source = "{{LOGO_SOURCE}}";
+                {{/INCLUDE_COMPANY_BRANDING}}
+
+                // Wire up event handlers
+                SetupEventHandlers();
+                
+                {{#INCLUDE_USER_PICTURE}}
+                // Load last logged user
+                LoadLastLoggedUser();
+                {{/INCLUDE_USER_PICTURE}}
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", $"Failed to initialize: {ex.Message}", "OK");
+            }
+        }
+
+        private void SetupEventHandlers()
+        {
+            {{#INCLUDE_EMAIL_PASSWORD}}
+            BtnLogin.Clicked += OnLoginClicked;
+            {{/INCLUDE_EMAIL_PASSWORD}}
+            
+            {{#INCLUDE_BIOMETRIC}}
+            BiometricLoginBtn.Clicked += OnBiometricLoginClicked;
+            BtnLogin.Clicked += OnPinLoginClicked;
+            ChangeUser.GestureRecognizers.Add(new TapGestureRecognizer 
+            { 
+                Command = new Command(OnChangeUserTapped) 
+            });
+            StoredUser.GestureRecognizers.Add(new TapGestureRecognizer 
+            { 
+                Command = new Command(OnStoredUserTapped) 
+            });
+            {{/INCLUDE_BIOMETRIC}}
+            
+            {{#INCLUDE_OAUTH}}
+            OAuthLoginBtn.Clicked += OnOAuthLoginClicked;
+            {{/INCLUDE_OAUTH}}
+            
+            {{#INCLUDE_SSO}}
+            var ssoTapGesture = new TapGestureRecognizer();
+            ssoTapGesture.Tapped += OnSsoLoginTapped;
+            SsoLoginFrame.GestureRecognizers.Add(ssoTapGesture);
+            {{/INCLUDE_SSO}}
+            
+            {{#INCLUDE_VALIDATION}}
+            ForgotPassword.GestureRecognizers.Add(new TapGestureRecognizer 
+            { 
+                Command = new Command(OnForgotPasswordTapped) 
+            });
+            {{/INCLUDE_VALIDATION}}
+        }
+
+        {{#INCLUDE_USER_PICTURE}}
+        private async void LoadLastLoggedUser()
+        {
+            try
+            {
+                // Load from secure storage
+                LastLoggedUserName = await SecureStorage.GetAsync("LastLoggedUser") ?? string.Empty;
+                if (!string.IsNullOrEmpty(LastLoggedUserName))
+                {
+                    UsernameLabel.Text = LastLoggedUserName;
+                    StoredUser.IsVisible = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error loading last logged user: {ex.Message}");
+            }
+        }
+        {{/INCLUDE_USER_PICTURE}}
+
+        #endregion
+
+        #region Event Handlers
+
+        {{#INCLUDE_EMAIL_PASSWORD}}
+        private async void OnLoginClicked(object? sender, EventArgs e)
+        {
+            if (IsBusy) return;
+
+            try
+            {
+                IsBusy = true;
+                
+                {{#INCLUDE_VALIDATION}}
+                if (!ValidateInputs())
+                {
+                    IsBusy = false;
+                    return;
+                }
+                {{/INCLUDE_VALIDATION}}
+
+                var email = EmailEntry.Text?.Trim() ?? "";
+                var password = PasswordEntry.Text ?? "";
+
+                // Perform login
+                var loginResult = await PerformEmailPasswordLogin(email, password);
+                
+                if (loginResult.Success)
+                {
+                    // Navigate to main page
+                    await Shell.Current.GoToAsync("//main");
+                }
+                else
+                {
+                    await DisplayAlert("Login Failed", loginResult.ErrorMessage, "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Login failed: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        {{/INCLUDE_EMAIL_PASSWORD}}
+
+        {{#INCLUDE_BIOMETRIC}}
+        private async void OnBiometricLoginClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var result = await PerformBiometricAuthentication();
+                
+                if (result.Success)
+                {
+                    await Shell.Current.GoToAsync("//main");
+                }
+                else
+                {
+                    // Show PIN entry as fallback
+                    PinFrame.IsVisible = true;
+                    BiometricLoginBtn.Text = "Use PIN Instead";
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Biometric authentication failed: {ex.Message}", "OK");
+            }
+        }
+
+        private async void OnPinLoginClicked(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(PinEntry.Text))
+            {
+                await DisplayAlert("Error", "Please enter your PIN", "OK");
+                return;
+            }
+
+            var result = await PerformPinLogin(PinEntry.Text);
+            
+            if (result.Success)
+            {
+                await Shell.Current.GoToAsync("//main");
+            }
+            else
+            {
+                await DisplayAlert("Error", "Invalid PIN", "OK");
+            }
+        }
+
+        private void OnChangeUserTapped()
+        {
+            // Clear stored user and show login form
+            UsernameLabel.Text = string.Empty;
+            StoredUser.IsVisible = false;
+            ChangeUser.IsVisible = false;
+        }
+
+        private async void OnStoredUserTapped()
+        {
+            if (!string.IsNullOrEmpty(LastLoggedUserName))
+            {
+                // Trigger biometric or PIN authentication for stored user
+                await OnBiometricLoginClicked(null, null);
+            }
+        }
+        {{/INCLUDE_BIOMETRIC}}
+
+        {{#INCLUDE_OAUTH}}
+        private async void OnOAuthLoginClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var result = await PerformOAuthLogin("google");
+                
+                if (result.Success)
+                {
+                    await Shell.Current.GoToAsync("//main");
+                }
+                else
+                {
+                    await DisplayAlert("Login Failed", result.ErrorMessage, "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"OAuth login failed: {ex.Message}", "OK");
+            }
+        }
+        {{/INCLUDE_OAUTH}}
+
+        {{#INCLUDE_SSO}}
+        private async void OnSsoLoginTapped(object sender, EventArgs e)
+        {
+            try
+            {
+                var result = await PerformSsoLogin();
+                
+                if (result.Success)
+                {
+                    await Shell.Current.GoToAsync("//main");
+                }
+                else
+                {
+                    await DisplayAlert("Login Failed", result.ErrorMessage, "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"SSO login failed: {ex.Message}", "OK");
+            }
+        }
+        {{/INCLUDE_SSO}}
+
+        {{#INCLUDE_VALIDATION}}
+        private void OnEmailTextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Real-time email validation
+            var email = e.NewTextValue;
+            var isValid = IsValidEmail(email);
+            
+            // Update UI based on validation
+            EmailEntry.TextColor = isValid ? Color.FromArgb("#495057") : Color.FromArgb("#f44336");
+        }
+
+        private void OnPasswordTextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Real-time password validation
+            var password = e.NewTextValue;
+            var isValid = !string.IsNullOrEmpty(password) && password.Length >= 6;
+            
+            // Update UI based on validation
+            PasswordEntry.TextColor = isValid ? Color.FromArgb("#495057") : Color.FromArgb("#f44336");
+        }
+
+        private void OnForgotPasswordTapped()
+        {
+            // Navigate to forgot password page
+            Shell.Current.GoToAsync("//forgotpassword");
+        }
+        {{/INCLUDE_VALIDATION}}
+
+        #endregion
+
+        #region Authentication Methods
+
+        {{#INCLUDE_EMAIL_PASSWORD}}
+        private async Task<LoginResult> PerformEmailPasswordLogin(string email, string password)
+        {
+            // Implement your email/password authentication logic here
+            // This could call your API service
+            
+            await Task.Delay(1000); // Simulate network call
+            
+            // Replace with actual authentication logic
+            if (email == "admin@company.com" && password == "password123")
+            {
+                return new LoginResult { Success = true };
+            }
+            
+            return new LoginResult { Success = false, ErrorMessage = "Invalid credentials" };
+        }
+        {{/INCLUDE_EMAIL_PASSWORD}}
+
+        {{#INCLUDE_BIOMETRIC}}
+        private async Task<LoginResult> PerformBiometricAuthentication()
+        {
+            try
+            {
+                var result = await BiometricAuthenticationService.GetAvailabilityAsync();
+                
+                if (result == BiometricAuthenticationStatus.Available)
+                {
+                    var authResult = await BiometricAuthenticationService.AuthenticateAsync(
+                        new BiometricAuthenticationRequest
+                        {
+                            Title = "Authenticate",
+                            Subtitle = "Use your biometric to authenticate",
+                            Description = "Place your finger on the sensor or look at the camera",
+                            FallbackTitle = "Use PIN",
+                            NegativeText = "Cancel"
+                        });
+
+                    return new LoginResult { Success = authResult.Status == BiometricAuthenticationStatus.Succeeded };
+                }
+                
+                return new LoginResult { Success = false, ErrorMessage = "Biometric authentication not available" };
+            }
+            catch (Exception ex)
+            {
+                return new LoginResult { Success = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        private async Task<LoginResult> PerformPinLogin(string pin)
+        {
+            // Implement PIN validation logic
+            await Task.Delay(500);
+            
+            // Replace with actual PIN validation
+            var storedPin = await SecureStorage.GetAsync("UserPin");
+            
+            return new LoginResult 
+            { 
+                Success = pin == storedPin,
+                ErrorMessage = pin != storedPin ? "Invalid PIN" : null
+            };
+        }
+        {{/INCLUDE_BIOMETRIC}}
+
+        {{#INCLUDE_OAUTH}}
+        private async Task<LoginResult> PerformOAuthLogin(string provider)
+        {
+            try
+            {
+                WebAuthenticatorResult authResult = null;
+                
+                if (provider == "google")
+                {
+                    authResult = await WebAuthenticator.AuthenticateAsync(
+                        new WebAuthenticatorOptions
+                        {
+                            Url = new Uri("https://accounts.google.com/oauth/authorize?..."),
+                            CallbackUrl = new Uri("myapp://authenticated")
+                        });
+                }
+                
+                if (authResult != null)
+                {
+                    // Process the authentication result
+                    var accessToken = authResult.AccessToken;
+                    
+                    // Call your backend to exchange token
+                    return await ExchangeOAuthToken(accessToken, provider);
+                }
+                
+                return new LoginResult { Success = false, ErrorMessage = "OAuth authentication failed" };
+            }
+            catch (Exception ex)
+            {
+                return new LoginResult { Success = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        private async Task<LoginResult> ExchangeOAuthToken(string accessToken, string provider)
+        {
+            // Implement token exchange with your backend
+            await Task.Delay(500);
+            
+            // Replace with actual token exchange logic
+            return new LoginResult { Success = true, AccessToken = accessToken };
+        }
+        {{/INCLUDE_OAUTH}}
+
+        {{#INCLUDE_SSO}}
+        private async Task<LoginResult> PerformSsoLogin()
+        {
+            try
+            {
+                // Implement SSO authentication logic
+                // This typically involves redirecting to your SSO provider
+                
+                var authResult = await WebAuthenticator.AuthenticateAsync(
+                    new WebAuthenticatorOptions
+                    {
+                        Url = new Uri("https://your-sso-provider.com/auth"),
+                        CallbackUrl = new Uri("myapp://authenticated")
+                    });
+                
+                if (authResult != null)
+                {
+                    var token = authResult.AccessToken;
+                    return await ValidateSsoToken(token);
+                }
+                
+                return new LoginResult { Success = false, ErrorMessage = "SSO authentication failed" };
+            }
+            catch (Exception ex)
+            {
+                return new LoginResult { Success = false, ErrorMessage = ex.Message };
+            }
+        }
+
+        private async Task<LoginResult> ValidateSsoToken(string token)
+        {
+            // Implement SSO token validation with your backend
+            await Task.Delay(500);
+            
+            // Replace with actual SSO token validation logic
+            return new LoginResult { Success = true, AccessToken = token };
+        }
+        {{/INCLUDE_SSO}}
+
+        #endregion
+
+        #region Validation Methods
+
+        {{#INCLUDE_VALIDATION}}
+        private bool ValidateInputs()
+        {
+            {{#INCLUDE_EMAIL_PASSWORD}}
+            var email = EmailEntry.Text?.Trim();
+            var password = PasswordEntry.Text;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                ShowValidationError("Please enter your email");
+                return false;
+            }
+
+            if (!IsValidEmail(email))
+            {
+                ShowValidationError("Please enter a valid email address");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(password))
+            {
+                ShowValidationError("Please enter your password");
+                return false;
+            }
+
+            if (password.Length < 6)
+            {
+                ShowValidationError("Password must be at least 6 characters");
+                return false;
+            }
+            {{/INCLUDE_EMAIL_PASSWORD}}
+
+            return true;
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+                return false;
+
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private void ShowValidationError(string message)
+        {
+            MessageLabel.Text = message;
+            MessagesStack.IsVisible = true;
+        }
+
+        private void HideValidationError()
+        {
+            MessagesStack.IsVisible = false;
+        }
+        {{/INCLUDE_VALIDATION}}
+
+        #endregion
+    }
+
+    #region Helper Classes
+
+    public class LoginResult
+    {
+        public bool Success { get; set; }
+        public string? ErrorMessage { get; set; }
+        public string? AccessToken { get; set; }
+        public string? RefreshToken { get; set; }
+        public string? UserName { get; set; }
+        public string? UserId { get; set; }
+    }
+
+    #endregion
+}

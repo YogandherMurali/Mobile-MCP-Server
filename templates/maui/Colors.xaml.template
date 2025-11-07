@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="{{NAMESPACE}}.Styles.Colors">
+
+    <!-- Primary Brand Colors -->
+    <Color x:Key="PrimaryColor">{{PRIMARY_COLOR}}</Color>
+    <Color x:Key="PrimaryDarkColor">{{PRIMARY_DARK_COLOR}}</Color>
+    <Color x:Key="PrimaryLightColor">{{PRIMARY_LIGHT_COLOR}}</Color>
+    
+    <!-- Secondary Brand Colors -->
+    <Color x:Key="SecondaryColor">{{SECONDARY_COLOR}}</Color>
+    <Color x:Key="SecondaryDarkColor">{{SECONDARY_DARK_COLOR}}</Color>
+    <Color x:Key="SecondaryLightColor">{{SECONDARY_LIGHT_COLOR}}</Color>
+    
+    <!-- Accent Colors -->
+    <Color x:Key="AccentColor">{{ACCENT_COLOR}}</Color>
+    <Color x:Key="AccentDarkColor">{{ACCENT_DARK_COLOR}}</Color>
+    <Color x:Key="AccentLightColor">{{ACCENT_LIGHT_COLOR}}</Color>
+
+    <!-- Background Colors -->
+    <Color x:Key="BackgroundColor">#FFFFFF</Color>
+    <Color x:Key="SurfaceColor">#F8F9FA</Color>
+    <Color x:Key="CardBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="OverlayColor">#80000000</Color>
+
+    <!-- Text Colors -->
+    <Color x:Key="TextPrimaryColor">#212529</Color>
+    <Color x:Key="TextSecondaryColor">#6C757D</Color>
+    <Color x:Key="TextTertiaryColor">#ADB5BD</Color>
+    <Color x:Key="TextOnPrimaryColor">#FFFFFF</Color>
+    <Color x:Key="TextOnSecondaryColor">#FFFFFF</Color>
+    <Color x:Key="TextOnSurfaceColor">#212529</Color>
+
+    <!-- Border and Divider Colors -->
+    <Color x:Key="BorderColor">#DEE2E6</Color>
+    <Color x:Key="DividerColor">#E9ECEF</Color>
+    <Color x:Key="FocusedBorderColor">{{PRIMARY_COLOR}}</Color>
+    
+    <!-- State Colors -->
+    <Color x:Key="SuccessColor">#28A745</Color>
+    <Color x:Key="WarningColor">#FFC107</Color>
+    <Color x:Key="ErrorColor">#DC3545</Color>
+    <Color x:Key="InfoColor">#17A2B8</Color>
+    
+    <!-- Interactive States -->
+    <Color x:Key="HoverColor">#F8F9FA</Color>
+    <Color x:Key="PressedColor">#E9ECEF</Color>
+    <Color x:Key="DisabledColor">#6C757D</Color>
+    <Color x:Key="DisabledBackgroundColor">#E9ECEF</Color>
+
+    <!-- Form Control Colors -->
+    <Color x:Key="EntryBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="EntryBorderColor">#CED4DA</Color>
+    <Color x:Key="EntryFocusedBorderColor">{{PRIMARY_COLOR}}</Color>
+    <Color x:Key="EntryErrorBorderColor">#DC3545</Color>
+    <Color x:Key="EntryTextColor">#495057</Color>
+    <Color x:Key="EntryPlaceholderColor">#6C757D</Color>
+
+    <!-- Button Colors -->
+    <Color x:Key="ButtonPrimaryBackgroundColor">{{PRIMARY_COLOR}}</Color>
+    <Color x:Key="ButtonPrimaryTextColor">#FFFFFF</Color>
+    <Color x:Key="ButtonPrimaryHoverColor">{{PRIMARY_DARK_COLOR}}</Color>
+    <Color x:Key="ButtonPrimaryPressedColor">{{PRIMARY_DARK_COLOR}}</Color>
+    
+    <Color x:Key="ButtonSecondaryBackgroundColor">{{SECONDARY_COLOR}}</Color>
+    <Color x:Key="ButtonSecondaryTextColor">#FFFFFF</Color>
+    <Color x:Key="ButtonSecondaryHoverColor">{{SECONDARY_DARK_COLOR}}</Color>
+    <Color x:Key="ButtonSecondaryPressedColor">{{SECONDARY_DARK_COLOR}}</Color>
+    
+    <Color x:Key="ButtonOutlineBackgroundColor">Transparent</Color>
+    <Color x:Key="ButtonOutlineTextColor">{{PRIMARY_COLOR}}</Color>
+    <Color x:Key="ButtonOutlineBorderColor">{{PRIMARY_COLOR}}</Color>
+    <Color x:Key="ButtonOutlineHoverColor">{{PRIMARY_LIGHT_COLOR}}</Color>
+
+    <!-- Icon Colors -->
+    <Color x:Key="IconPrimaryColor">{{PRIMARY_COLOR}}</Color>
+    <Color x:Key="IconSecondaryColor">#6C757D</Color>
+    <Color x:Key="IconTertiaryColor">#ADB5BD</Color>
+    <Color x:Key="IconOnPrimaryColor">#FFFFFF</Color>
+    <Color x:Key="IconOnSecondaryColor">#FFFFFF</Color>
+
+    <!-- Shadow and Elevation -->
+    <Color x:Key="ShadowColor">#1A000000</Color>
+    <Color x:Key="ElevationColor">#0D000000</Color>
+
+    {{#INCLUDE_DARK_THEME}}
+    <!-- Dark Theme Colors -->
+    <Color x:Key="DarkBackgroundColor">#121212</Color>
+    <Color x:Key="DarkSurfaceColor">#1E1E1E</Color>
+    <Color x:Key="DarkCardBackgroundColor">#2C2C2C</Color>
+    <Color x:Key="DarkTextPrimaryColor">#FFFFFF</Color>
+    <Color x:Key="DarkTextSecondaryColor">#B3B3B3</Color>
+    <Color x:Key="DarkTextTertiaryColor">#808080</Color>
+    <Color x:Key="DarkBorderColor">#404040</Color>
+    <Color x:Key="DarkDividerColor">#333333</Color>
+    <Color x:Key="DarkEntryBackgroundColor">#2C2C2C</Color>
+    <Color x:Key="DarkEntryBorderColor">#404040</Color>
+    {{/INCLUDE_DARK_THEME}}
+
+    {{#INCLUDE_CUSTOM_COLORS}}
+    <!-- Custom Application Colors -->
+    {{CUSTOM_COLORS}}
+    {{/INCLUDE_CUSTOM_COLORS}}
+
+</ResourceDictionary>

@@ -1,16 +1,27 @@
 # Mobile MCP Server
 
-A Model Context Protocol (MCP) server boilerplate with streamable HTTP transport layer, designed for easy deployment and extensibility.
+A comprehensive mobile development code generation platform supporting both MCP (Model Context Protocol) and REST API. Generate production-ready code for MAUI, Kotlin/Android, Swift/iOS, and React Native applications.
+
+## 📖 What Can This Server Do?
+
+**Looking for capabilities?** See **[CAPABILITIES.md](CAPABILITIES.md)** for a complete guide to all available code generation tasks!
+
+**Quick Summary:**
+- 🎯 **4 Mobile Platforms:** MAUI, Kotlin/Android, Swift/iOS, React Native
+- 🔐 **Authentication Flows:** Email/password, biometric, OAuth, SSO
+- 💾 **Database Setup:** SQLite, Room, Core Data with repositories
+- 📴 **Offline Functionality:** Sync strategies and conflict resolution
+- 🔌 **Dual Access:** MCP Protocol for AI assistants + REST API for direct use
 
 ## 🚀 Features
 
-- **MCP Protocol Support**: Full implementation of the Model Context Protocol
-- **Streamable HTTP Transport**: RESTful API with streaming capabilities
+- **MCP Protocol Support**: Full implementation of the Model Context Protocol for AI assistants
+- **REST API**: Simple HTTP endpoints for direct integration
+- **Multi-Platform Code Generation**: Support for 4 major mobile platforms
+- **Production-Ready Code**: Generate complete, working components
 - **Docker Ready**: Complete containerization with Docker and Docker Compose
-- **Echo Tool**: Built-in echo tool with formatting options (ready for extension)
 - **Health Monitoring**: Built-in health checks and monitoring endpoints
-- **Security**: Helmet.js, CORS, and security best practices
-- **Performance**: Compression and optimized middleware stack
+- **Comprehensive Documentation**: Detailed guides and examples
 
 ## 📋 Prerequisites
 
